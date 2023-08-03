@@ -1,5 +1,5 @@
 local nvim_lsp = require('lspconfig')
-local servers = { 'tsserver', 'gopls', 'intelephense', 'eslint', 'svelte' }
+local servers = { 'tsserver', 'gopls', 'intelephense', 'eslint', 'svelte', 'sumneko_lua', 'pyright', 'pylsp' }
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
