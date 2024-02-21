@@ -1,7 +1,7 @@
 local nvim_lsp = require('lspconfig')
-local servers = { 'tsserver', 'gopls', 'intelephense', 'eslint', 'svelte', 'sumneko_lua', 'pyright', 'pylsp' }
+local servers = { 'tsserver', 'gopls', 'intelephense', 'eslint', 'svelte', 'pyright', 'pylsp', 'rust_analyzer'}
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
@@ -9,6 +9,7 @@ local on_attach = function(client, bufnr)
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -35,6 +36,14 @@ for _, lsp in ipairs(servers) do
         on_attach = on_attach
     }
 end
+
+local pid = vim.fn.getpid()
+
+local omnisharp_bin = "/home/deck/Developments/omnisharp-roslyn/OmniSharp"
+require'lspconfig'.omnisharp.setup{
+    cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+    on_attach = on_attach
+}
 
 
 -- -- Golang LSP
